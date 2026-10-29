@@ -108,6 +108,7 @@ export interface ClientToServerEvents {
   createRoom: (data: { playerName: string }, callback: (res: { success: boolean; roomId?: string; error?: string }) => void) => void;
   joinRoom: (data: { roomId: string; playerName: string }, callback: (res: { success: boolean; error?: string }) => void) => void;
   createBotGame: (data: { playerName: string }, callback: (res: { success: boolean; roomId?: string; error?: string }) => void) => void;
+  cancelRoom: () => void;
   selectCard: (cardId: string) => void;
   selectModifier: (modifierId: string | null) => void;
   confirmTurn: () => void;

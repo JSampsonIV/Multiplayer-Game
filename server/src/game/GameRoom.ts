@@ -267,6 +267,18 @@ export class GameRoom {
     // Calculate battle logic
     this.currentBattle = evaluateRound(p1Data, p2Data);
 
+    // Populate activeResolution immediately so reveal sequence is known
+    this.activeResolution = {
+      winnerId: this.currentBattle.finalWinnerId,
+      isTie: this.currentBattle.isFinalTie,
+      stakes: this.warStakes,
+      firstModifierRevealedBy: this.currentBattle.firstFlipperId,
+      secondModifierRevealedBy: this.currentBattle.secondFlipperId,
+      firstModifierEffect: this.currentBattle.firstModifierLog,
+      secondModifierEffect: this.currentBattle.secondModifierLog,
+      logMessages: this.currentBattle.logMessages,
+    };
+
     // Phase 1: REVEAL NORMAL CARDS
     this.phase = 'REVEAL_NORMAL';
     this.emitLog(
@@ -278,7 +290,7 @@ export class GameRoom {
     // Step 2: REVEAL MODIFIER 1 (Tentative winner flips first or tiebreaker flipper)
     const t1 = setTimeout(() => {
       this.revealFirstModifier();
-    }, 2400);
+    }, 1600);
     this.timers.push(t1);
   }
 
@@ -290,11 +302,9 @@ export class GameRoom {
     if (firstPlayer) {
       if (this.currentBattle.firstModifier) {
         this.emitLog(
-          `${firstPlayer.name} reveals modifier: ${this.currentBattle.firstModifier.title} - ${this.currentBattle.firstModifier.description}`,
+          `${firstPlayer.name} reveals modifier: ${this.currentBattle.firstModifier.title}`,
           'modifier'
         );
-      } else {
-        this.emitLog(`${firstPlayer.name} has no modifier card to reveal.`, 'info');
       }
     }
 
@@ -303,7 +313,7 @@ export class GameRoom {
     // Step 3: REVEAL MODIFIER 2
     const t2 = setTimeout(() => {
       this.revealSecondModifier();
-    }, 2400);
+    }, 1600);
     this.timers.push(t2);
   }
 
@@ -315,11 +325,9 @@ export class GameRoom {
     if (secondPlayer) {
       if (this.currentBattle.secondModifier) {
         this.emitLog(
-          `${secondPlayer.name} reveals modifier: ${this.currentBattle.secondModifier.title} - ${this.currentBattle.secondModifier.description}`,
+          `${secondPlayer.name} reveals modifier: ${this.currentBattle.secondModifier.title}`,
           'modifier'
         );
-      } else {
-        this.emitLog(`${secondPlayer.name} has no modifier card to reveal.`, 'info');
       }
     }
 
@@ -328,7 +336,7 @@ export class GameRoom {
     // Step 4: RESOLVE ROUND
     const t3 = setTimeout(() => {
       this.resolveRound();
-    }, 2600);
+    }, 1600);
     this.timers.push(t3);
   }
 

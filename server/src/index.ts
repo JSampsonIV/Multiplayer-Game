@@ -108,6 +108,15 @@ io.on('connection', (socket: Socket<ClientToServerEvents, ServerToClientEvents>)
     }
   });
 
+  socket.on('cancelRoom', () => {
+    const session = socketToPlayerMap.get(socket.id);
+    if (session) {
+      rooms.delete(session.roomId);
+      socketToPlayerMap.delete(socket.id);
+      socket.leave(session.roomId);
+    }
+  });
+
   socket.on('selectCard', (cardId: string) => {
     const session = socketToPlayerMap.get(socket.id);
     if (!session) return;

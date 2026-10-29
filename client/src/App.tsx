@@ -130,6 +130,13 @@ export const App: React.FC = () => {
     });
   };
 
+  const handleCancelWaitingRoom = () => {
+    if (socket) {
+      socket.emit('cancelRoom');
+    }
+    setWaitingRoomId(null);
+  };
+
   // Gameplay actions
   const handleSelectCard = (cardId: string) => {
     if (!socket) return;
@@ -167,6 +174,7 @@ export const App: React.FC = () => {
         onJoinRoom={handleJoinRoom}
         onCreateBotGame={handleCreateBotGame}
         waitingRoomId={waitingRoomId}
+        onCancelWaitingRoom={handleCancelWaitingRoom}
         errorMessage={errorMessage}
       />
     );

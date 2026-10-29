@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Users, KeyRound, BookOpen, Swords, Sparkles, Copy, Check } from 'lucide-react';
+import { Bot, Users, KeyRound, BookOpen, Swords, Sparkles, Copy, Check, ArrowLeft } from 'lucide-react';
 import { RulesModal } from './RulesModal';
 
 interface LobbyProps {
@@ -9,6 +9,7 @@ interface LobbyProps {
   onJoinRoom: (roomId: string) => void;
   onCreateBotGame: () => void;
   waitingRoomId: string | null;
+  onCancelWaitingRoom: () => void;
   errorMessage: string | null;
 }
 
@@ -19,6 +20,7 @@ export const Lobby: React.FC<LobbyProps> = ({
   onJoinRoom,
   onCreateBotGame,
   waitingRoomId,
+  onCancelWaitingRoom,
   errorMessage,
 }) => {
   const [joinCode, setJoinCode] = useState('');
@@ -102,6 +104,16 @@ export const Lobby: React.FC<LobbyProps> = ({
 
             <div className="text-xs text-slate-500 animate-pulse">
               Waiting for player 2 to connect...
+            </div>
+
+            {/* Back / Cancel Button */}
+            <div className="pt-2">
+              <button
+                onClick={onCancelWaitingRoom}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 text-xs font-cinzel font-bold uppercase tracking-wider transition cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" /> Cancel & Return to Menu
+              </button>
             </div>
           </div>
         ) : (
