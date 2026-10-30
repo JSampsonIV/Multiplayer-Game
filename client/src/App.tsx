@@ -29,8 +29,11 @@ export const App: React.FC = () => {
 
   // Initialize Socket.io
   useEffect(() => {
-    // In dev, Vite proxies /socket.io to localhost:3001, or fallback direct port
-    const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:3001' : '/';
+    // In dev, Vite proxies /socket.io to localhost:3001, or fallback direct port.
+    // In production, use VITE_SERVER_URL if provided, else current origin.
+    const socketUrl =
+      import.meta.env.VITE_SERVER_URL ||
+      (window.location.hostname === 'localhost' ? 'http://localhost:3001' : '/');
     const s: Socket<ServerToClientEvents, ClientToServerEvents> = io(socketUrl, {
       transports: ['websocket', 'polling'],
     });
